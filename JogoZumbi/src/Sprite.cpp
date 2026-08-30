@@ -5,10 +5,14 @@
 
 Sprite::Sprite(){
     texture = nullptr;
+    width = 0, height = 0;
+    SetFrameCount(1, 1);
 }
 
-Sprite::Sprite(string file){
+Sprite::Sprite(string file, int frameCountW, int frameCountH){
     texture = nullptr;
+    this->frameCountW = frameCountW;
+    this->frameCountH = frameCountH;
     Open(file);
 }
 
@@ -22,6 +26,7 @@ void Sprite::Open(string file){
     }
     
     texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str());
+    
     if(texture == nullptr){
         cout << "Erro ao carregar imagem: " << SDL_GetError() << endl;
         return;
@@ -29,29 +34,51 @@ void Sprite::Open(string file){
 
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 
-    SetClip(0,0,width,height);
+    SetFrame(0);
 }
 
 void Sprite::SetClip(int x, int y, int w, int h){
     clipRect = {x,y,w,h};
 }
 
-void Sprite::Render(int x, int y){
+void Sprite::Render(int x, int y, int w, int h){
     SDL_Rect dstRect;
 
-    dstRect = {x,y,clipRect.w,clipRect.h};
+    dstRect = {x,y,w,h};
 
     SDL_RenderCopy(Game::GetInstance().GetRenderer(),texture,&clipRect,&dstRect);
 }
 
 int Sprite::GetWidth(){
-    return width;
+    return width/frameCountW;
 }
 
 int Sprite::GetHeight(){
-    return height;
+    return height/frameCountH;
 }
 
 bool Sprite::IsOpen(){
     return (texture != nullptr);
+}
+
+void Sprite::SetFrame(int frame){
+    if(frame < 0 || frame >= frameCountW * frameCountH){
+        return;
+    }
+
+    int frameW = width/frameCountW;
+    int frameH = height/frameCountH;
+
+    int frameX = frame % frameCountW;
+    int frameY = frame / frameCountW;
+
+    int x = frameX * frameW;
+    int y = frameY * frameH;
+
+    SetClip(x, y, frameW, frameH);
+}
+
+void Sprite::SetFrameCount(int frameCountW, int frameCountH){
+    this->frameCountW = frameCountW;
+    this->frameCountH = frameCountH;
 }
