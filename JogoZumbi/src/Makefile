@@ -1,2 +1,2 @@
 all:
-	g++ -I ../include -L ../lib -o main main.cpp Game.cpp State.cpp Sprite.cpp SpriteRenderer.cpp Music.cpp Component.cpp GameObject.cpp Zombie.cpp Rect.cpp Vec2.cpp Animation.cpp Animator.cpp -lmingw32 -lSDL2main -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
+	g++ -I ../include -L ../lib -o main *.cpp -lmingw32 -lSDL2main -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2

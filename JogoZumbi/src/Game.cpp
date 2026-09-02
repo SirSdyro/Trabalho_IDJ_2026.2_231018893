@@ -1,6 +1,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <Game.h>
+#include <Resources.h>
 using namespace std;
 
 Game* Game::instance = nullptr;
@@ -69,4 +70,7 @@ void Game::Run(){
         SDL_RenderPresent(renderer);
         SDL_Delay(33);
     }
+    Resources::ClearImages();
+    Resources::ClearMusics();
+    Resources::ClearSounds();
 }

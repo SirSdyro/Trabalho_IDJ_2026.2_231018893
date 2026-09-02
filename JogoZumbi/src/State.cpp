@@ -1,6 +1,8 @@
 #include <State.h>
 #include <SpriteRenderer.h>
 #include <Zombie.h>
+#include <TileMap.h>
+#include <TileSet.h>
 #include <SDL2/SDL.h>
 
 State::State(){
@@ -11,13 +13,38 @@ State::State(){
     bg->AddComponent(spriteRenderer);
     AddObject(bg);
 
-    GameObject* zombie = new GameObject();
-    Zombie* zombieCpt = new Zombie(*zombie);
-    zombie->AddComponent(zombieCpt);
+    GameObject* tileMap = new GameObject();
+    TileSet* tileSet = new TileSet(64, 64, "../recursos/img/Tileset.png");
+    TileMap* tileMapCpt = new TileMap(*tileMap, "../recursos/map/map.txt", tileSet);
+    tileMap->AddComponent(tileMapCpt);
+
+    tileMap->box.x = 0;
+    tileMap->box.y = 0;
+    AddObject(tileMap);
+
+    GameObject* zombie1 = new GameObject();
+    Zombie* zombieCpt1 = new Zombie(*zombie1);
+    zombie1->AddComponent(zombieCpt1);
     
-    zombie->box.x = 600;
-    zombie->box.y = 450;
-    AddObject(zombie);
+    zombie1->box.x = 600;
+    zombie1->box.y = 450;
+    AddObject(zombie1);
+
+    GameObject* zombie2 = new GameObject();
+    Zombie* zombieCpt2 = new Zombie(*zombie2);
+    zombie2->AddComponent(zombieCpt2);
+    
+    zombie2->box.x = 800;
+    zombie2->box.y = 450;
+    AddObject(zombie2);
+
+    GameObject* zombie3 = new GameObject();
+    Zombie* zombieCpt3 = new Zombie(*zombie3);
+    zombie3->AddComponent(zombieCpt3);
+    
+    zombie3->box.x = 700;
+    zombie3->box.y = 650;
+    AddObject(zombie3);
 
     music.Open("../recursos/audio/BGM.wav");
     music.Play();

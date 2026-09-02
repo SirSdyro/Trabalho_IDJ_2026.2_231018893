@@ -3,8 +3,8 @@
 #include <SpriteRenderer.h>
 #include <Animator.h>
 
-Zombie::Zombie(GameObject& associated) : Component(associated){
-    hitpoints = 100;
+Zombie::Zombie(GameObject& associated) : Component(associated), hitpoints(100), 
+deathSound("../recursos/audio/Dead.wav"){
 
     SpriteRenderer* spriteRenderer = new SpriteRenderer(associated, "../recursos/img/Enemy.png", 3, 2);
     associated.AddComponent(spriteRenderer);
@@ -18,14 +18,19 @@ Zombie::Zombie(GameObject& associated) : Component(associated){
 }
 
 void Zombie::Damage(int damage){
-    hitpoints -= damage;
-    
-    if(hitpoints <= 0){
-        SpriteRenderer* spriteRenderer = associated.GetComponent<SpriteRenderer>();
+    if (hitpoints <= 0)
+        return;
 
-        if (spriteRenderer != nullptr) {
-            spriteRenderer->SetFrame(5);
+    hitpoints -= damage;
+
+    if (hitpoints <= 0) {
+        Animator* animator = associated.GetComponent<Animator>();
+
+        if (animator != nullptr) {
+            animator->SetAnimation("dead");
         }
+
+        deathSound.Play(1);
     }
 }
 
